@@ -82,10 +82,15 @@ def create_parser():
 def main(args):
     vm = Gio.VolumeMonitor.get()
     connections = []
-    connections.append(vm.connect("mount-added", on_mount_added, None))
-    connections.append(vm.connect("mount-changed", on_mount_changed, None))
-    connections.append(vm.connect("mount-pre-unmount", on_mount_pre_unmount, None))
-    connections.append(vm.connect("mount-removed", on_mount_removed, None))
+    connections.append(vm.connect("mount-added", on_mount_added, 1))
+    connections.append(vm.connect("mount-changed", on_mount_changed, 1))
+    connections.append(vm.connect("mount-pre-unmount", on_mount_pre_unmount, 1))
+    connections.append(vm.connect("mount-removed", on_mount_removed, 1))
+
+    # Synthesize mount-added events for pre-existing mounts
+    for mount in vm.get_mounts():
+        on_mount_added(vm, mount, 0)
+
     GObject.MainLoop().run()
 
 if __name__ == '__main__':
