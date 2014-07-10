@@ -49,6 +49,7 @@ class IconManager:
 
     def on_mount_removed(self, volume_monitor, mount, *user_args):
         dump_event("removed", mount)
+        del self.icons[mount.get_root().get_path()]
 
     def create_icon(self, mount):
         label = mount.get_name()
