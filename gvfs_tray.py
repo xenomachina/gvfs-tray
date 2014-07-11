@@ -36,6 +36,10 @@ def dump_event(event, mount):
 class IconManager:
     def __init__(self):
         self.icons = {}
+        self.menu_items = (
+                ("Open", "open"),
+                ("Eject", "eject"),
+            )
 
     def on_mount_added(self, volume_monitor, mount, *user_args):
         dump_event("added", mount)
@@ -58,7 +62,33 @@ class IconManager:
         icon.set_tooltip_markup("%s <tt>%s</tt>"
                 % tuple(map(htmlEscape, (label, path))))
         icon.set_visible(True)
+
+        icon.connect("activate", self.on_activate, mount)
+        icon.connect("popup-menu", self.on_popup_menu, mount)
+
         self.icons[path] = icon
+
+    def on_popup_menu(self, status_icon, button, activate_time, mount):
+        menu = self.menu = Gtk.Menu()
+        for label, command in self.menu_items:
+            item = Gtk.MenuItem()
+            item.set_label(label)
+            item.connect("activate", self.on_menu_item_activated, command,
+                    mount)
+            menu.append(item)
+        menu.show_all()
+
+        pos = Gtk.StatusIcon.position_menu
+        menu.popup(None, None, pos, status_icon, button, activate_time)
+
+    def on_menu_item_activated(self, *args):
+        print("\nMENU ITEM ACTIVATE")
+        dump_to_stdout(*args)
+
+    def on_activate(self, status_icon, mount):
+        print("\nACTIVATE")
+        print("status_icon\t", status_icon)
+        print("mount\t", mount)
 
 class UserError(Exception):
     def __init__(self, message):
