@@ -7,6 +7,7 @@ Overview
 
 Creates status icons for mounted removable volumes.
 
+
 Looks for removable volumes and creates a status icon for each one. These
 usually appear in the tray, depending on your desktop environment.
 
@@ -18,6 +19,21 @@ Each icon has a context menu to do useful operations like:
 
 Additionally, "activating" (by clicking, in most DEs) the icon is equivalent to
 the "Open" action.
+
+Screenshots
+--
+
+The two rightmost icons here are for a USB thumb drive and an optical disc:
+
+![Icons](/screenshots/basic.png?raw=true)
+
+Hovering over an icon gives some basic info about the volume:
+
+![Tooltip screenshot](/screenshots/tooltip.png?raw=true)
+
+The context menu:
+
+![Context menu screenshot](/screenshots/menu.png?raw=true)
 
 
 Usage
