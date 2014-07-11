@@ -47,12 +47,14 @@ class IconManager:
 
     def on_mount_changed(self, volume_monitor, mount, *user_args):
         dump_event("changed", mount)
+        # TODO: rebuild icon?
 
     def on_mount_pre_unmount(self, volume_monitor, mount, *user_args):
         dump_event("pre-unmount", mount)
 
     def on_mount_removed(self, volume_monitor, mount, *user_args):
         dump_event("removed", mount)
+        # TODO: delete menu if it's for this mount?
         del self.icons[mount.get_root().get_path()]
 
     def create_icon(self, mount):
@@ -76,10 +78,14 @@ class IconManager:
             item.connect("activate", self.on_menu_item_activated, command,
                     mount)
             menu.append(item)
+        menu.connect("deactivate", self.on_menu_deactivate)
         menu.show_all()
 
         pos = Gtk.StatusIcon.position_menu
         menu.popup(None, None, pos, status_icon, button, activate_time)
+
+    def on_menu_deactivate(self, *args):
+        del self.menu
 
     def on_menu_item_activated(self, *args):
         print("\nMENU ITEM ACTIVATE")
