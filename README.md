@@ -25,7 +25,7 @@ Screenshots
 
 The two rightmost icons here are for a USB thumb drive and an optical disc:
 
-![Icons](/screenshots/basic.png?raw=true)
+![Icons](/screenshots/base.png?raw=true)
 
 Hovering over an icon gives some basic info about the volume:
 
