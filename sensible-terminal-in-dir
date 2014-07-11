@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# First argument is the dir to start in. Remaining arguments will just be
+# passed along to terminal.
+cd "$1"
+shift
+
+# Figure out which terminal to use. As far as I know, neither sensible-terminal
+# nor xdg-terminal actually exists, but just in case they do they seem like a
+# better default than someing wm-specific. That said, i3-sensible-terminal has
+# the advantage that it actually exists. As a fallback, use xterm, which pretty
+# much everyone has.
+for terminal in sensible-terminal xdg-terminal i3-sensible-terminal xterm; do
+  type >/dev/null 2>&1 "$terminal" && break
+done
+
+"$terminal" "$@" &
