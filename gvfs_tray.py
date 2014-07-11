@@ -73,7 +73,7 @@ class IconManager:
         label = mount.get_name()
         path = mount.get_root().get_path()
         icon = Gtk.StatusIcon.new_from_gicon(mount.get_icon())
-        icon.set_tooltip_markup("%s <tt>%s</tt>"
+        icon.set_tooltip_markup("%s\n<tt>%s</tt>"
                 % tuple(map(htmlEscape, (label, path))))
         icon.set_visible(True)
 
