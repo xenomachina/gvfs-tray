@@ -25,6 +25,16 @@ def dump_to_stdout(*args, **kwargs):
     pprint({"Args": args})
     pprint({"KWArgs": kwargs})
 
+def mk_on_debug(event):
+    """
+    Create a debugging event handler.
+    """
+    def on_debug(*args):
+        print()
+        print(event)
+        pprint(*args, indent=2)
+    return on_debug
+
 def print_volume_identifiers(volume):
     for identifier in volume.enumerate_identifiers():
         print("    %s: %r" % (identifier, volume.get_identifier(identifier)))
