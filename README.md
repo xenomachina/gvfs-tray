@@ -10,6 +10,15 @@ Creates status icons for mounted removable volumes.
 Looks for removable volumes and creates a status icon for each one. These
 usually appear in the tray, depending on your desktop environment.
 
+Each icon has a context menu to do useful operations like:
+
+- Open: opens the volume in a file browser.
+- Terminal: Opens the volume in a terminal.
+- Eject: Unmounts (and ejects, if possible) the volume.
+
+Additionally, "activating" (by clicking, in most DEs) the icon is equivalent to
+the "Open" action.
+
 
 Usage
 --
@@ -27,3 +36,8 @@ instead:
 
 (These both assume you've put the script in ~/bin -- adjust the path
 accordingly.)
+
+You will also need sensible-terminal-in-dir in your path. I just add a symlink
+in ~/bin:
+
+    ln -sv $PWD/sensible-terminal-in-dir ~/bin/
