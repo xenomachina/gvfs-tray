@@ -9,6 +9,7 @@ usually appear in the tray, depending on your desktop environment.
 """
 
 import argparse
+import subprocess
 import sys
 
 from gi.repository import Gio
@@ -47,8 +48,9 @@ class IconManager:
     def __init__(self):
         self.icons = {}
         self.menu_items = (
-                ("Open", "open"),
-                ("Eject", "eject"),
+                ('Open',        ('xdg-open',)),
+                ('Terminal',    ('sensible-terminal-in-dir',)),
+                ('Eject',       ('gvfs-mount', '--eject',)),
             )
 
     def on_mount_added(self, volume_monitor, mount, *user_args):
@@ -97,14 +99,18 @@ class IconManager:
     def on_menu_deactivate(self, *args):
         del self.menu
 
-    def on_menu_item_activated(self, *args):
-        print("\nMENU ITEM ACTIVATE")
-        dump_to_stdout(*args)
+    def on_menu_item_activated(self, menu_item, command, mount):
+        self.call_command(command, mount)
+
+    def call_command(self, command, mount):
+        path = mount.get_root().get_path()
+        full_command = command + (path,)
+        print("+ %r" % (full_command,))
+        subprocess.call(full_command)
 
     def on_activate(self, status_icon, mount):
-        print("\nACTIVATE")
-        print("status_icon\t", status_icon)
-        print("mount\t", mount)
+        label, command = self.menu_items[0]
+        self.call_command(command, mount)
 
 class UserError(Exception):
     def __init__(self, message):
