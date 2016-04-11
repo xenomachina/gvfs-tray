@@ -47,11 +47,17 @@ def dump_event(event, mount):
 class IconManager:
     def __init__(self):
         self.icons = {}
-        self.menu_items = (
+
+    def menu_items(self, mount):
+        result = [
                 ('Open',        ('xdg-open',)),
                 ('Terminal',    ('sensible-terminal-in-dir',)),
-                ('Eject',       ('gvfs-mount', '--eject',)),
-            )
+            ]
+        if (mount.can_eject()):
+            result.append(('Eject', ('gvfs-mount', '--eject')))
+        elif (mount.can_unmount()):
+            result.append(('Unmount', ('gvfs-mount', '--unmount')))
+        return tuple(result)
 
     def on_mount_added(self, volume_monitor, mount, *user_args):
         dump_event("added", mount)
@@ -84,7 +90,7 @@ class IconManager:
 
     def on_popup_menu(self, status_icon, button, activate_time, mount):
         menu = self.menu = Gtk.Menu()
-        for label, command in self.menu_items:
+        for label, command in self.menu_items(mount):
             item = Gtk.MenuItem()
             item.set_label(label)
             item.connect("activate", self.on_menu_item_activated, command,
@@ -109,7 +115,7 @@ class IconManager:
         subprocess.call(full_command)
 
     def on_activate(self, status_icon, mount):
-        label, command = self.menu_items[0]
+        label, command = self.menu_items(mount)[0]
         self.call_command(command, mount)
 
 class UserError(Exception):
