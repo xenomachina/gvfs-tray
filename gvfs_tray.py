@@ -120,7 +120,7 @@ class IconManager:
         path = mount.get_root().get_path()
         full_command = command + (path,)
         print("+ %r" % (full_command,))
-        subprocess.call(full_command)
+        subprocess.Popen(full_command)
 
     def on_activate(self, status_icon, mount):
         label, command = self.menu_items(mount)[0]
