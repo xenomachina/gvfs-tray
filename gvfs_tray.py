@@ -81,16 +81,20 @@ class IconManager:
 
     def create_icon(self, mount):
         label = mount.get_name()
-        path = mount.get_root().get_path()
-        icon = Gtk.StatusIcon.new_from_gicon(mount.get_icon())
-        icon.set_tooltip_markup("%s\n<tt>%s</tt>"
-                % tuple(map(htmlEscape, (label, path))))
-        icon.set_visible(True)
+        print(label)
+        if mount.can_eject():
+            path = mount.get_root().get_path()
+            got = mount.get_icon()
+            icon = Gtk.StatusIcon.new_from_gicon(got)
+            icon.set_tooltip_markup("%s\n<tt>%s</tt>"
+                    % tuple(map(htmlEscape, (label, path))))
+            icon.set_visible(True)
 
-        icon.connect("activate", self.on_activate, mount)
-        icon.connect("popup-menu", self.on_popup_menu, mount)
+            icon.connect("activate", self.on_activate, mount)
+            icon.connect("popup-menu", self.on_popup_menu, mount)
 
-        self.icons[path] = icon
+            self.icons[path] = icon
+        print()
 
     def on_popup_menu(self, status_icon, button, activate_time, mount):
         menu = self.menu = Gtk.Menu()
