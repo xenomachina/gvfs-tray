@@ -81,8 +81,19 @@ class IconManager:
 
     def create_icon(self, mount):
         label = mount.get_name()
-        print(label)
-        if mount.can_eject():
+
+        # volume = mount.get_volume()
+        # drive = volume.get_drive()
+        # print(f'create icon: {label} [can_eject={mount.can_eject()}'
+        #       f' can_unmount={mount.can_unmount()}'
+        #       f' is_floating={volume.is_floating()}'
+        #       f' is_removable={drive.is_removable()}'
+        #       f' is_media_removable={drive.is_media_removable()}'
+        #       f' path={mount.get_root().get_path()}'
+        #   )
+        # pprint(dir(drive))
+
+        if mount.can_eject() or mount.get_volume().get_drive().is_removable():
             path = mount.get_root().get_path()
             got = mount.get_icon()
             icon = Gtk.StatusIcon.new_from_gicon(got)
