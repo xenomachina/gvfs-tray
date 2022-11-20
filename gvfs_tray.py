@@ -9,6 +9,7 @@ usually appear in the tray, depending on your desktop environment.
 """
 
 import argparse
+import html
 import subprocess
 import sys
 
@@ -21,7 +22,6 @@ from gi.repository import GObject
 from gi.repository import Gtk
 from gi.repository import Notify
 
-from cgi import escape as htmlEscape
 from pprint import pprint
 
 __author__  = 'Laurence Gonsalves <laurence@xenomachina.com>'
@@ -99,7 +99,7 @@ class IconManager:
             got = mount.get_icon()
             icon = Gtk.StatusIcon.new_from_gicon(got)
             icon.set_tooltip_markup("%s\n<tt>%s</tt>"
-                    % tuple(map(htmlEscape, (label, path))))
+                    % tuple(map(html.escape, (label, path))))
             icon.set_visible(True)
 
             icon.connect("activate", self.on_activate, mount)
